@@ -1,0 +1,35 @@
+(label direction
+  (text "Where do you wanna go?")
+  (choice "-X" jump decrease-x)
+  (choice "+X" jump increase-x)
+  (choice "-Y" jump decrease-y)
+  (choice "+Y" jump increase-y)
+  (choice "-Z" cond (cmp iter-count 10) jump decrease-z)
+)
+
+(label decrease-x
+  (text "Decreasing player X...")
+  (after (body (set* iter-count (+ iter-count 1)) (move self-pawn -10 0 0)) jump direction)
+)
+
+(label increase-x
+  (text "Increasing player X...")
+  (after (body (set* iter-count (+ iter-count 1)) (move self-pawn 10 0 0)) jump direction)
+)
+
+(label decrease-y
+  (text "Decreasing player Y...")
+  (after (body (set* iter-count (+ iter-count 1)) (move self-pawn 0 -10 0)) jump direction)
+)
+
+(label increase-y
+  (text "Increasing player Y...")
+  (after (body (set* iter-count (+ iter-count 1)) (move self-pawn 0 10 0)) jump direction)
+)
+
+(label decrease-y
+  (text "Decreasing player Z...")
+  (after (body (set* iter-count (+ iter-count 1)) (move self-pawn 0 0 -10)) jump direction)
+)
+
+(start-dialogue direction)

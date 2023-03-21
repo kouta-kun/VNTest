@@ -1,0 +1,23 @@
+(label who-dunit
+  (text "So... who did it?")
+  (choice "I did!" jump self-incriminate)
+  (choice "Dunno" jump fake-knowledge)
+  (choice "You did!" cond (cmp charisma 10) jump turn-around)
+)
+
+(label self-incriminate
+  (text "I... I can't believe you would admit it! You're going to jail.")
+  (after (set* life-state 0) end-dialogue)
+)
+
+(label fake-knowledge
+  (text "You expect me to believe you don't know who did it? You think I'm an idiot? Better answer!")
+  (after (set* life-state (- life-state 0.5)) jump who-dunit)
+)
+
+(label turn-around
+  (text "I- How did you know!? You shut up, if I find out you told anyone you're dead.")
+  (after end-dialogue)
+)
+
+(start-dialogue who-dunit)

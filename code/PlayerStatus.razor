@@ -1,0 +1,84 @@
+﻿@using System
+@using System.Collections.Generic
+@using Sandbox;
+@using Sandbox.UI;
+
+@inherits Panel;
+
+@namespace Sandbox
+
+<style>
+    
+    .extend {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+    }
+    
+    .dialogue {
+        width: 45vw;
+        height: 30vh;
+        margin: 3vh auto auto;
+        border: 1px solid #2f2f2f;
+        background-color: #8f8f8f;
+        flex-direction: column;
+    }
+    
+    .header-dialogue {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 2vw;
+        font-weight: bolder;
+    }
+    
+    .item-dialogue {
+        font-size: 1.5vw;
+    }
+    
+    .selected-text {
+        color: #ff0000;
+        
+        text-decoration: underline;
+    }
+    </style>
+<root class="extend">
+    @if (DialogueText != null)
+    {
+        <div class="dialogue">
+            <div class="header-dialogue">
+                @(DialogueText)
+            </div>
+            @for (var i = 0; i < DialogueChoices.Count; i++)
+            {
+                <div class="item-dialogue @(i == DialogueChoice ? "selected-text" : "")">@(DialogueChoices[i])</div>
+            }
+
+        </div>
+    }
+</root>
+
+@code {
+
+    private static Pawn Player => Game.LocalPawn as Pawn;
+
+    private string DialogueText { get; set; }
+    private IList<string> DialogueChoices { get; set; }
+
+    private int DialogueChoice { get; set; } = 0;
+
+    public override void Tick()
+    {
+        base.Tick();
+        DialogueText = Player.CurrentDialogueText;
+        DialogueChoices = Player.CurrentDialogueChoices;
+        DialogueChoice = Player.CurrentDialogueChoice;
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(DialogueText, DialogueChoices, DialogueChoice);
+    }
+
+}
